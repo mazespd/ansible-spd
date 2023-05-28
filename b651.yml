@@ -1,0 +1,54 @@
+#Задание B6.5.1
+#Напишите плейбук, который будет на удаленной системе создавать пользователя user1 и задавать ему SSH-ключ (создавая заданный ключ в /home/user1/.ssh/id_rsa.pub). 
+#Ключ не должен передаваться в открытом виде. Используйте для шифрования ключа ansible-vault. Ключ можете сгенерировать, используя SSH-keygen.
+#Создайте плейбук, который устанавливает, либо удаляет почтовый сервер postfix в зависимости от тега.
+#При запуске ansible-playbook <путь_к_плейбуку> --tags "init postfix" должен устанавливаться и запускаться с конфигурацией по умолчанию. При запуске ansible-playbook <путь_к_плейбуку> --tags drop postfix должен удаляться с машины.
+
+- hosts: test
+  become: yes
+  vars:
+    user: user1
+    port: 200
+    password: user12
+  tasks:
+
+  - name: Add the user 'user1'
+    ansible.builtin.user:
+      name: "{{ user }}"
+      password: "{{ password }}"
+      shell: /bin/bash
+      groups:
+       - input
+       - dialout
+       - lp
+
+#- name: Create a 2048-bit SSH key for user1
+#  ansible.builtin.user:
+#   name: user1
+#   generate_ssh_key: yes
+#   ssh_key_bits: 2048
+#   ssh_key_file: /home/user1/.ssh/id_rsa
+
+  - name: SSH keys
+    authorized_key:
+      user: "{{ user }}"
+      state: present
+      key: "{{ item }}"
+    with_file:
+      - files/id_ed25519.pub
+
+  - name: Install postfix
+    apt:
+     pkg:
+         - postfix
+     state: latest
+     update_cache: true
+    tags: init postfix
+
+  - name: Drop postfix
+    apt:
+     pkg:
+         - postfix
+     state: absent
+     update_cache: true
+    tags: drop postfix
