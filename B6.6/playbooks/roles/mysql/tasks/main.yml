@@ -1,0 +1,29 @@
+---
+# tasks file for mysql
+- name: install package
+  yum:
+    name: mariadb-server, vsftpd
+    state: installed
+ 
+- name: start service
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: Ensure service is started
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: copy vsftpd config
+  template:
+    src: vsftpd.conf
+    dest: "/etc/vsftpd/"
+    owner: "root"
+    group: "root"
+    mode: '0600'
+  notify:
+   - Restart vsftpd
+
