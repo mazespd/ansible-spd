@@ -1,0 +1,11 @@
+---
+# tasks file for dnsmasq
+
+- name: Dnsmasq
+  import_tasks: dnsmasq.yml
+
+- name: Add users
+  import_tasks: users.yml
+
+- name: Nginx+php
+  import_tasks: nginx_php.yml

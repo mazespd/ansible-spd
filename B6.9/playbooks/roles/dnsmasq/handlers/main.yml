@@ -1,0 +1,22 @@
+---
+# handlers file for dnsmasq
+- name: restart dnsmasq
+  become: true
+  systemd:
+    daemon_reload: true
+    name: dnsmasq.service
+    state: restarted
+
+- name: restart systemd-resolved
+  become: true
+  systemd:
+    daemon_reload: true
+    name: systemd-resolved.service
+    state: restarted
+
+- name: restart nginx
+  become: true
+  systemd:
+    daemon_reload: true
+    name: nginx.service
+    state: restarted

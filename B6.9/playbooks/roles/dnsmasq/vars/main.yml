@@ -1,0 +1,7 @@
+---
+# vars file for dnsmasq
+user: user1
+user_password: user1
+
+user2: user2
+user2_password: user2
