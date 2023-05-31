@@ -1,0 +1,13 @@
+[all:vars]
+ansible_user='ansible'
+ansible_become='yes'
+ansible_become_user='root'
+ansible_become_pass=1
+ansible_become_method='su'
+
+#####################################################################################################
+[nginx]
+158.160.61.69
+
+[php]
+158.160.98.50

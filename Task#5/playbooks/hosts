@@ -1,0 +1,10 @@
+[test:vars]
+ansible_user='ansible'
+ansible_become='yes'
+ansible_become_user='root'
+ansible_become_pass=1
+ansible_become_method='su'
+
+#####################################################################################################
+[test]
+158.160.109.223

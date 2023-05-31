@@ -1,0 +1,40 @@
+# install nginx
+- name: install nginx
+  apt:
+    name:
+      - nginx
+    state: present
+    update_cache: yes
+
+- name: Creates directory
+  file:
+    path: /opt/nginx/ansible/{{ domain }}/html
+    state: directory
+
+- name: Copy config nginx
+  template:
+    src: nginx_conf.j2
+    dest: /etc/nginx/sites-available/{{ domain }}.conf
+    owner: root
+    group: root
+    mode: u=rw,g=rw
+
+- name: Create symbolic link
+  file:
+    src: "/etc/nginx/sites-available/{{ domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ domain }}.conf"
+    state: link
+
+- ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/etc/nginx/sites-enabled/default"
+    - "/etc/nginx/sites-available/default"
+
+- name: restart nginx
+  become: true
+  systemd:
+    daemon_reload: true
+    name: nginx.service
+    state: restarted

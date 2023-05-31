@@ -1,0 +1,5 @@
+---
+# tasks file for users
+
+- name: Users
+  import_tasks: users.yml

@@ -1,0 +1,35 @@
+# install php
+- name: install php
+  apt:
+    name:
+      - php-fpm
+    state: present
+    update_cache: yes
+
+- name: Creates directory
+  file:
+    path: /opt/nginx/ansible/{{ domain }}/html
+    state: directory
+
+- name: Copy config php
+  template:
+    src: index_php.j2
+    dest: /opt/nginx/ansible/{{ domain }}/html/index.php
+    owner: root
+    group: root
+    mode: u=rw,g=rw
+
+- name: Copy www config php
+  template:
+    src: www.j2
+    dest: /etc/php/8.1/fpm/pool.d/www.conf
+    owner: root
+    group: root
+    mode: u=rw,g=rw
+
+- name: restart php
+  become: true
+  systemd:
+    daemon_reload: true
+    name: php8.1-fpm.service
+    state: restarted
