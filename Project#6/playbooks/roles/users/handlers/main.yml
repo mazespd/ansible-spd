@@ -1,0 +1,8 @@
+---
+# handlers file for Project#6
+
+- name: Restart sshd
+  ansible.builtin.systemd:
+    name: sshd
+    state: restarted
+    enabled: yes

@@ -1,0 +1,18 @@
+[all:vars]
+ansible_user='ansible'
+ansible_become='yes'
+ansible_become_user='root'
+ansible_become_pass=1
+ansible_become_method='su'
+
+[database:vars]
+data = /var/lib/pgsql/data/pg_hba.conf
+version = 12
+
+#####################################################################################################
+[app]
+158.160.48.219
+158.160.103.253
+
+[database]
+62.84.125.238

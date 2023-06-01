@@ -1,0 +1,18 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  roles:
+   - users
+
+- hosts: app
+  gather_facts: yes
+  become: yes
+  roles:
+   - docker
+
+- hosts: database
+  gather_facts: yes
+  become: yes
+  roles:
+   - sql
